@@ -8,26 +8,27 @@ exports.getUser = async (req, res) => {
 };
 
 exports.addUser = async (req, res) => {
-  const { name, email, role } = req.body;
+  const { name, email, role } = req.body;  
  
   try {
     const user = new User({ name, email, role });
     user.save();
-    res.status(200).json({
+    res.status(200).json({ 
       message: "Data Added Successfully",
     });
   } catch (error) {
     console.log(error);
   }
-};
+}; 
 
 exports.updateUser = async (req, res) => {
-  const { name, email, role } = req.body;
+  const {id} = req.params
+  const { name, email, role } = req.body;  
 
 
   try {
-    const newUser = new User({ name, email, role });
-    newUser.save()
+   
+   User.findByIdAndUpdate(id,{name, email, role})
     res.status(200).json({
         message:"Updated Successfully"
     })
@@ -37,14 +38,14 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const { name, email, role } = req.body;
-  const user = await User.findOne({ email });
+  const { id } = req.params;
+  
   try {
-    await User.findByIdAndDelete(user);
+    await User.findByIdAndDelete(id);
     res.status(200).json({
       message: "User Deleted Successfully",
     });
   } catch (error) {
-    console.log(error);
+    console.log(error); 
   }
 };
